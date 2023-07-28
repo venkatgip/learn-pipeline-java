@@ -1,26 +1,33 @@
-pipeline {
-  agent any
-  
-  stages {
-    stage('one') {
-      steps {
-        echo 'first stage'
-        echo env.CHANGE_ID
-      }
+plugins {
+    id 'java'
+}
+
+// Set the Java version
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+// Define project dependencies (if any)
+dependencies {
+    // Example dependency: JUnit for testing
+    testImplementation 'junit:junit:4.13.2'
+}
+
+// Define the main source set (Java source code)
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
     }
-    stage('two') {
-      steps {
-        sh 'echo test > log.txt'
-        
-        archiveArtifacts artifacts: 'log.txt', followSymlinks: false
-      }
+}
+
+// Define the test source set (JUnit test code)
+sourceSets {
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
     }
-    stage('three') {
-      steps {
-        sh 'echo test > three.txt'
-        
-        archiveArtifacts artifacts: 'three.txt', followSymlinks: false
-      }
-    }
-  }
 }
